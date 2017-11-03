@@ -6,7 +6,13 @@
   "author": {
     "name": "kotakahashi"
   },
-  "devDependencies": {
-    "shapefile": "github:frogcat/shapefile"
+  "dependencies": {
+    "shapefile": "0.6.6",
+    "array-source": "0.0",
+    "commander": "2",
+    "path-source": "0.1",
+    "slice-source": "0.4",
+    "stream-source": "0.3",
+    "text-encoding": "^0.6.4"
   }
 }
