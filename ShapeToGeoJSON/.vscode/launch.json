@@ -7,12 +7,12 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "local_debug",
-            "program": "${workspaceFolder}\\app.js",
+            "name": "test_utf8_points",
+            "program": "${workspaceFolder}/app.js",
             "args": [
-                "--encoding", "Shift_jis",
-                "-o", "C:\\Users\\kotakahashi\\Desktop\\TestData\\out.geojson",
-                "C:\\Users\\kotakahashi\\Desktop\\TestData\\N03-17_13_170101.shp"
+                "--encoding", "utf8",
+                "-o", "obj/Debug/points.geojson",
+                "test/points.shp"
             ]
         }
     ]
