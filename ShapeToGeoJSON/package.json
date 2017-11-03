@@ -1,0 +1,9 @@
+{
+  "name": "shape-to-geo-json",
+  "version": "0.0.0",
+  "description": "ShapeToGeoJSON",
+  "main": "app.js",
+  "author": {
+    "name": "kotakahashi"
+  }
+}
