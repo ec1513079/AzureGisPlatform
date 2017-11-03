@@ -5,5 +5,8 @@
   "main": "app.js",
   "author": {
     "name": "kotakahashi"
+  },
+  "devDependencies": {
+    "shapefile": "github:frogcat/shapefile"
   }
 }
