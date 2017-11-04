@@ -14,6 +14,18 @@
                 "-o", "obj/Debug/points.geojson",
                 "test/points.shp"
             ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "test_utf8_polygons",
+            "program": "${workspaceFolder}/app.js",
+            "args": [
+                "--encoding", "utf8",
+                "-o", "obj/Debug/polygons.geojson",
+                "-n",
+                "test/polygons.shp"
+            ]
         }
     ]
 }
