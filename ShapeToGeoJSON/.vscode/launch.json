@@ -23,8 +23,34 @@
             "args": [
                 "--encoding", "utf8",
                 "-o", "obj/Debug/polygons.geojson",
-                "-n",
                 "test/polygons.shp"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "test_shiftjis_01100札幌市2017_5",
+            "program": "${workspaceFolder}/app.js",
+            "args": [
+                "--encoding", "shift_jis",
+                "-c",
+                "--epsg-from", "+proj=tmerc +lat_0=44 +lon_0=142.25 +k=0.9999 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
+                "--epsg-to", "+proj=longlat +datum=WGS84 +no_defs",
+                "-o", "obj/Debug/01100札幌市2017_5.geojson",
+                "test/01100札幌市2017_5.shp"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "test_shiftjis_01634鹿追町2017_5",
+            "program": "${workspaceFolder}/app.js",
+            "args": [
+                "--encoding", "shift_jis",
+                "--convert-coordinates",
+                "--epsg-from", "+proj=tmerc +lat_0=44 +lon_0=144.25 +k=0.9999 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs",
+                "-o", "obj/Debug/01634鹿追町2017_5.geojson",
+                "test/01634鹿追町2017_5.shp"
             ]
         }
     ]
