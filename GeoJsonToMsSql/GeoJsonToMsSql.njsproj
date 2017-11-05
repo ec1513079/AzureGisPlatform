@@ -4,6 +4,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <Name>GeoJsonToMsSql</Name>
     <RootNamespace>GeoJsonToMsSql</RootNamespace>
+    <ScriptArguments>-o obj/out.sql test/01100札幌市2017_5.geojson</ScriptArguments>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -29,12 +30,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="json2mssql.js" />
+    <Compile Include="middleware.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="middlewares\GenkyoPolygons.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Content Include=".vscode\launch.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="test\01100札幌市2017_5.geojson" />
+    <Content Include="test\points.geojson" />
+    <Content Include="test\polygons.geojson" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include=".vscode\" />
+    <Folder Include="middlewares\" />
+    <Folder Include="test\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
