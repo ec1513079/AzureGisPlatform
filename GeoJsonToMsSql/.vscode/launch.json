@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "test",
+            "name": "test_points_geojson",
             "program": "${workspaceFolder}/json2mssql.js",
             "args": [
             ]

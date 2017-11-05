@@ -14,13 +14,13 @@ commander
     .version(require("./package.json").version)
     .usage("[options] [file]")
     .description("Convert a GeoJSON to MS SQL.")
-    .option("-o, --out <file>", "output file name; defaults to Åg-Åh for stdout", "-")
-    .option("--ignore-properties", "donÅft output geojson properties")
-    .option("--encoding <encoding>", "character encoding for geojson properties: defaults is Ågutf8Åh")
+    .option("-o, --out <file>", "output file name; defaults to '-' for stdout", "-")
+    .option("--ignore-properties", "don't output geojson properties")
+    .option("--encoding <encoding>", "character encoding for geojson properties: defaults is 'utf8'")
     .option("--table <tablename>", "target table name for insert: defaults is geojson file name (without extension)")
-    .option("--geo-column <columnname>", "column name of geometry: defaults is ÅgGeometryÅh")
+    .option("--geo-column <columnname>", "column name of geometry: defaults is 'Geometry'")
     .option("--srid <srid>", "geometry's srid : defaults is 0")
-    .option("--middleware <filepath>", "file path of middleware javascript : defaults is Åg./middleware.jsÅh")
+    .option("--middleware <filepath>", "file path of middleware javascript : defaults is './middleware.js'")
     .parse(process.argv);
 
 if (commander.args.length !== 1) {

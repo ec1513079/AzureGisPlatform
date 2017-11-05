@@ -1,4 +1,4 @@
-﻿// middleware.js
+// middleware.js
 var _geojson_file_name,
     _tablename,
     _geocolname,
