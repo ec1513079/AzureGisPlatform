@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "test_utf8_points",
-            "program": "${workspaceFolder}/app.js",
+            "program": "${workspaceFolder}/shp2json.js",
             "args": [
                 "--encoding", "utf8",
                 "-o", "obj/Debug/points.geojson",
@@ -19,7 +19,7 @@
             "type": "node",
             "request": "launch",
             "name": "test_utf8_polygons",
-            "program": "${workspaceFolder}/app.js",
+            "program": "${workspaceFolder}/shp2json.js",
             "args": [
                 "--encoding", "utf8",
                 "-o", "obj/Debug/polygons.geojson",
@@ -30,7 +30,7 @@
             "type": "node",
             "request": "launch",
             "name": "test_shiftjis_01100札幌市2017_5",
-            "program": "${workspaceFolder}/app.js",
+            "program": "${workspaceFolder}/shp2json.js",
             "args": [
                 "--encoding", "shift_jis",
                 "-c",
@@ -44,7 +44,7 @@
             "type": "node",
             "request": "launch",
             "name": "test_shiftjis_01634鹿追町2017_5",
-            "program": "${workspaceFolder}/app.js",
+            "program": "${workspaceFolder}/shp2json.js",
             "args": [
                 "--encoding", "shift_jis",
                 "--convert-coordinates",
