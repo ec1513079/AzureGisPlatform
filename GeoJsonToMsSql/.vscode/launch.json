@@ -10,6 +10,34 @@
             "name": "test_points_geojson",
             "program": "${workspaceFolder}/json2mssql.js",
             "args": [
+                "-o", "${workspaceFolder}/test/out/points.sql",
+                "--table", "PointGeometries",
+                "--geo-column", "PinGeometry",
+                "${workspaceFolder}/test/points.geojson"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "test_polygons_geojson",
+            "program": "${workspaceFolder}/json2mssql.js",
+            "args": [
+                "-o", "${workspaceFolder}/test/out/polygons.sql",
+                "--srid", "100",
+                "${workspaceFolder}/test/points.geojson"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "test_01100札幌市2017_5_geojson",
+            "program": "${workspaceFolder}/json2mssql.js",
+            "args": [
+                "-o", "${workspaceFolder}/test/out/01100札幌市2017_5.sql",
+                "--table", "GenkyoPolygons",
+                "--geo-column", "PolGeometry",
+                "--middleware", "${workspaceFolder}/middlewares/GenkyoPolygons.js",
+                "${workspaceFolder}/test/01100札幌市2017_5.geojson"
             ]
         }
     ]

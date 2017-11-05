@@ -259,3 +259,7 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+# Test results
+ShapeToGeoJSON/[Tt]est/[Oo]ut/*.geojson
+GeoJsonToMsSql/[Tt]est/[Oo]ut/*.sql

@@ -15,7 +15,7 @@ var Middleware = {
     featureMiddleware: function (feature) {
 
         feature.properties.PrefectureCd = _geojson_file_name.substr(0, 2);
-        feature.properties.CityJisCd = _geojson_file_name.substr(0, 5);
+        feature.properties.CItyJisCd = _geojson_file_name.substr(0, 5);
         var timoku = feature.properties.耕地の種類;
         delete feature.properties.耕地の種類;
         feature.properties.Timoku = timoku;

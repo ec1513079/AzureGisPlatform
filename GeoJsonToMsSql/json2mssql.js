@@ -32,7 +32,7 @@ if (commander.args.length !== 1) {
 
 var out = (commander.out === "-" ? process.stdout : fsout.createWriteStream(commander.out)).on("error", handleEpipe);
 
-var tablename = commander.tablename || path.basename(commander.args[0], path.extname(commander.args[0]));
+var tablename = commander.table || path.basename(commander.args[0], path.extname(commander.args[0]));
 var geocolname = commander.geoColumn || "Geometry";
 var srid = commander.srid || 0;
 var middleware = require(commander.middleware || "./middleware.js");

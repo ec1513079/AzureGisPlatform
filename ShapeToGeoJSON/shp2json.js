@@ -16,7 +16,7 @@ commander
   .option("--ignore-properties", "don't read shapefile properties (.dbf)")
   .option("--encoding <encoding>", "character encoding for shapefile properties (.dbf)")
   .option("--crs-name <name>", "specify a named CRS for the output feature collection")
-  .option("-c, --convert-coordinates", "enable convert coordinates")
+  .option("--convert-coordinates", "enable convert coordinates")
   .option("--epsg-from <value>", "value of Shapefile's EPSG for convert coordinates. default is EPSG:4326(+proj=longlat +datum=WGS84 +no_defs)")
   .option("--epsg-to <value>", "value of output EPSG for convert coordinates. default is EPSG:4326(+proj=longlat +datum=WGS84 +no_defs)")
   .parse(process.argv);
