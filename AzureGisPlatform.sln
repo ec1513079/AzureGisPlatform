@@ -7,6 +7,8 @@ Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "AzureResourceGroup", "Azure
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "ShapeToGeoJSON", "ShapeToGeoJSON\ShapeToGeoJSON.njsproj", "{F7813A84-4E96-4FCA-8163-F7357AA2DAA3}"
 EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "GeoJsonToMsSql", "GeoJsonToMsSql\GeoJsonToMsSql.njsproj", "{B665B55C-D58E-45FB-8B5E-9B999B0EBD73}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F7813A84-4E96-4FCA-8163-F7357AA2DAA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7813A84-4E96-4FCA-8163-F7357AA2DAA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7813A84-4E96-4FCA-8163-F7357AA2DAA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B665B55C-D58E-45FB-8B5E-9B999B0EBD73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B665B55C-D58E-45FB-8B5E-9B999B0EBD73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B665B55C-D58E-45FB-8B5E-9B999B0EBD73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B665B55C-D58E-45FB-8B5E-9B999B0EBD73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

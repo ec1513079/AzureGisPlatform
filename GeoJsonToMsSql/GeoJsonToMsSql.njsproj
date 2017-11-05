@@ -2,17 +2,16 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <Name>ShapeToGeoJSON</Name>
-    <RootNamespace>ShapeToGeoJSON</RootNamespace>
+    <Name>GeoJsonToMsSql</Name>
+    <RootNamespace>GeoJsonToMsSql</RootNamespace>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>f7813a84-4e96-4fca-8163-f7357aa2daa3</ProjectGuid>
+    <ProjectGuid>b665b55c-d58e-45fb-8b5e-9b999b0ebd73</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>
-    </StartupFile>
+    <StartupFile>json2mssql.js</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -29,30 +28,13 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="shp2json.js" />
+    <Compile Include="json2mssql.js" />
     <Content Include=".vscode\launch.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
-    <Content Include="test\01100札幌市2017_5.dbf" />
-    <Content Include="test\01100札幌市2017_5.prj" />
-    <Content Include="test\01100札幌市2017_5.shp" />
-    <Content Include="test\01100札幌市2017_5.shx" />
-    <Content Include="test\01634鹿追町2017_5.dbf" />
-    <Content Include="test\01634鹿追町2017_5.prj" />
-    <Content Include="test\01634鹿追町2017_5.shp" />
-    <Content Include="test\01634鹿追町2017_5.shx" />
-    <Content Include="test\points.dbf" />
-    <Content Include="test\points.prj" />
-    <Content Include="test\points.shp" />
-    <Content Include="test\points.shx" />
-    <Content Include="test\polygons.dbf" />
-    <Content Include="test\polygons.prj" />
-    <Content Include="test\polygons.shp" />
-    <Content Include="test\polygons.shx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include=".vscode\" />
-    <Folder Include="test\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />

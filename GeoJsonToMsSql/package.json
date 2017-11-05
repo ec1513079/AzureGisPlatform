@@ -1,19 +1,18 @@
 {
-  "name": "shape-to-geo-json",
-  "version": "0.1.0",
-  "description": "ShapeToGeoJSON",
-  "main": "shp2json.js",
+  "name": "geo-json-to-ms-sql",
+  "version": "0.0.0",
+  "description": "GeoJsonToMsSql",
+  "main": "json2mssql.js",
   "author": {
     "name": "kotakahashi"
   },
   "dependencies": {
-    "shapefile": "0.6.6",
     "array-source": "0.0",
     "commander": "2",
     "path-source": "0.1",
     "slice-source": "0.4",
     "stream-source": "0.3",
     "text-encoding": "^0.6.4",
-    "proj4": "2.4.4"
+    "wellknown": "^0.5.0"
   }
 }
