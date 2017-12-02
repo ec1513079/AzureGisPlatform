@@ -1,8 +1,8 @@
 var config = {}
 
-config.host = process.env.HOST || "https://opendatagis.documents.azure.com:443/";
-config.authKey = process.env.AUTH_KEY || "fAF9vtgqFUQWfOmrH4YNdDGRc1Gf01XTy9G9wnVnSxyZhFHpijXgkRolnvO1vtirhYqbcG8Qq2tpGKndU7SSYw==";
-config.databaseId = "ToDoList";
-config.collectionId = "Items";
+config.host = process.env.HOST || "https://ecgeojsonsample.documents.azure.com:443/";
+config.authKey = process.env.AUTH_KEY || "FHjYMtqWxw2sXZaGQ5oug8tKoPMnubvDyfpoL08nTjcbSflsLHnNsnb9SbZX0OM7A491rWc42eVNUk2lG5oDpA==";
+config.databaseId = "genkyo";
+config.collectionId = "genkyo";
 
 module.exports = config;

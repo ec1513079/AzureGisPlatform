@@ -11,11 +11,12 @@ TaskList.prototype = {
         var self = this;
 
         var querySpec = {
-            query: 'SELECT * FROM root r WHERE r.completed=@completed',
-            parameters: [{
-                name: '@completed',
-                value: false
-            }]
+            // query: 'SELECT * FROM root r WHERE r.completed=@completed',
+            // parameters: [{
+            //     name: '@completed',
+            //     value: false
+            // }]
+            query: 'SELECT top 10 * FROM c',
         };
 
         self.taskDao.find(querySpec, function (err, items) {
@@ -24,7 +25,7 @@ TaskList.prototype = {
             }
 
             res.render('index', {
-                title: 'My ToDo List ',
+                title: 'GeoJSON from DocumentDB with spatial index',
                 tasks: items
             });
         });

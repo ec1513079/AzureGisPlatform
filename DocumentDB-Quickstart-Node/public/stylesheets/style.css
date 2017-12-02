@@ -15,3 +15,6 @@ a {
   margin-top: 5px;
   border: outset 1px #C8C8C8;
 }
+#mapid { 
+  height: 400px; 
+}
