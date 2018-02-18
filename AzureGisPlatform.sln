@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "AzureResourceGroup", "AzureResourceGroup\AzureResourceGroup.deployproj", "{173B3A14-7483-4FAE-A105-E66C142A83CD}"
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "ShapeToGeoJSON", "ShapeToGeoJSON\ShapeToGeoJSON.njsproj", "{F7813A84-4E96-4FCA-8163-F7357AA2DAA3}"
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "GeoJsonToMsSql", "GeoJsonToMsSql\GeoJsonToMsSql.njsproj", "{B665B55C-D58E-45FB-8B5E-9B999B0EBD73}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunction", "AzureFunction\AzureFunction.csproj", "{B0D6D338-A690-43CB-BFF6-5C1B0C082CB6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{B665B55C-D58E-45FB-8B5E-9B999B0EBD73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B665B55C-D58E-45FB-8B5E-9B999B0EBD73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B665B55C-D58E-45FB-8B5E-9B999B0EBD73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0D6D338-A690-43CB-BFF6-5C1B0C082CB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0D6D338-A690-43CB-BFF6-5C1B0C082CB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0D6D338-A690-43CB-BFF6-5C1B0C082CB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0D6D338-A690-43CB-BFF6-5C1B0C082CB6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

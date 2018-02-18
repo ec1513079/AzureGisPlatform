@@ -263,3 +263,6 @@ __pycache__/
 # Test results
 ShapeToGeoJSON/[Tt]est/[Oo]ut/*.geojson
 GeoJsonToMsSql/[Tt]est/[Oo]ut/*.sql
+
+# Tmp
+[Tt]mp/
