@@ -1,0 +1,13 @@
+{
+  "disabled": false,
+  "bindings": [
+    {
+      "name": "shapeBlob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "dataType": "binary",
+      "path": "shapefile/{name}.zip",
+      "connection": "AzureWebJobsStorage"
+    }
+  ]
+}
