@@ -3,6 +3,7 @@ var fs = require("fs"),
     request = require('request'),
     shapefile = require('shapefile'),
     proj4 = require("proj4");
+const del = require('del');
 
 module.exports = function (context, queueItem) {
 
@@ -14,12 +15,12 @@ module.exports = function (context, queueItem) {
 
     // Create Working dirctory
     var execPath = context.executionContext.functionDirectory;
-    var tmpDir = `${execPath}\\tmp\\${context.invocationId}`;
-    mkdirp.sync(tmpDir);
+    var workDir = `${execPath}\\tmp\\${context.invocationId}`;
+    mkdirp.sync(workDir);
 
     // Download Shape file and Dbf file
-    var tmpShpfilePath = `${tmpDir}\\tmp.shp`;
-    var tmpDbffilePath = `${tmpDir}\\tmp.dbf`;
+    var tmpShpfilePath = `${workDir}\\tmp.shp`;
+    var tmpDbffilePath = `${workDir}\\tmp.dbf`;
     var requestShp = new Promise(resolve =>
         request(queueItem.shp_url)
         .pipe(fs.createWriteStream(tmpShpfilePath))
@@ -28,24 +29,26 @@ module.exports = function (context, queueItem) {
         request(queueItem.dbf_url)
         .pipe(fs.createWriteStream(tmpDbffilePath))
         .on('finish', resolve));
-    Promise.all([requestShp, requestDbf]).then(function (sources) {
-        // Convert Shapefile to GeoJSON
-        shapefile.open(tmpShpfilePath, tmpDbffilePath, {
-                encoding: queueItem.shp_encoding
-            })
-            .then(writeFeatureCollection)
-            .then(function (geojson){
-                context.bindings.outputBlob = geojson;
-                context.done();
-            })
-            .catch(function (err) {
-                context.log.error(err.stack);
-                context.done(err.stack);
+    Promise.all([requestShp, requestDbf])
+        .then(function (sources) {
+            // Convert Shapefile to GeoJSON
+            return shapefile.open(tmpShpfilePath, tmpDbffilePath, {
+                    encoding: queueItem.shp_encoding
+                })
+                .then(writeFeatureCollection)
+                .then(function (geojson) {
+                    context.bindings.outputBlob = geojson;
+                    context.done();
+                });
+        }).catch(function (err) {
+            context.log.error(err.stack);
+            context.done(err.stack);
+        }).then(function () {
+            // finally: delete working dirctory
+            del(workDir, {
+                force: true
             });
-    }).catch(function (err) {
-        context.log.error(err.stack);
-        context.done(err.stack);
-    });
+        });
 };
 
 function writeFeatureCollection(source) {
@@ -58,11 +61,11 @@ function writeFeatureCollection(source) {
         // Convert Coordinate
         var transformed = transformCoordinates(result.value.geometry.coordinates);
         result.value.geometry.coordinates = transformed;
-        
+
         geojson += JSON.stringify(result.value);
         return source.read().then(function repeat(result) {
             if (result.done) return;
-            
+
             // Convert Coordinate
             var transformed = transformCoordinates(result.value.geometry.coordinates);
             result.value.geometry.coordinates = transformed;
