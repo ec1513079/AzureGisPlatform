@@ -9,8 +9,8 @@ module.exports = function (context, queueItem) {
     context.log('JavaScript queue trigger function processed work item', queueItem);
 
     // Pre setting proj4
-    proj4.defs("EPSG:FROM", "+proj=longlat +datum=WGS84 +no_defs");
-    proj4.defs("EPSG:TO", "+proj=longlat +datum=WGS84 +no_defs");
+    proj4.defs("EPSG:FROM", queueItem.epsg_from || "+proj=longlat +datum=WGS84 +no_defs");
+    proj4.defs("EPSG:TO", queueItem.epsg_to || "+proj=longlat +datum=WGS84 +no_defs");
 
     // Create Working dirctory
     var execPath = context.executionContext.functionDirectory;
@@ -21,60 +21,59 @@ module.exports = function (context, queueItem) {
     var tmpShpfilePath = `${tmpDir}\\tmp.shp`;
     var tmpDbffilePath = `${tmpDir}\\tmp.dbf`;
     var requestShp = new Promise(resolve =>
-        request(queueItem.shpurl)
+        request(queueItem.shp_url)
         .pipe(fs.createWriteStream(tmpShpfilePath))
         .on('finish', resolve));
     var requestDbf = new Promise(resolve =>
-        request(queueItem.dbfurl)
+        request(queueItem.dbf_url)
         .pipe(fs.createWriteStream(tmpDbffilePath))
         .on('finish', resolve));
     Promise.all([requestShp, requestDbf]).then(function (sources) {
+        // Convert Shapefile to GeoJSON
         shapefile.open(tmpShpfilePath, tmpDbffilePath, {
-                encoding: queueItem.encoding
+                encoding: queueItem.shp_encoding
             })
-            .then(source => source.read()
-                .then(function log(result) {
-                    if (result.done) return;
-                    context.log(result.value);
-                    context.done();
-                }))
+            .then(writeFeatureCollection)
+            .then(function (geojson){
+                context.bindings.outputBlob = geojson;
+                context.done();
+            })
             .catch(function (err) {
                 context.log.error(err.stack);
-                context.done();
+                context.done(err.stack);
             });
     }).catch(function (err) {
-        context.log.error(err);
-        context.done();
+        context.log.error(err.stack);
+        context.done(err.stack);
     });
 };
 
 function writeFeatureCollection(source) {
-    out.write("{\"type\":\"FeatureCollection\"");
-    if (commander.crsName) {
-        out.write(",\"crs\":{\"type\":\"name\",\"properties\":{\"name\":");
-        out.write(JSON.stringify(commander.crsName + ""));
-        out.write("}}");
-    }
-    out.write(",\"features\":[");
+    var geojson = "";
+    geojson += "{\"type\":\"FeatureCollection\"";
+    geojson += ",\"features\":[";
     return source.read().then(function (result) {
         if (result.done) return;
-        if (commander.convertCoordinates) {
-            var transformed = transformCoordinates(result.value.geometry.coordinates);
-            result.value.geometry.coordinates = transformed;
-        }
-        out.write(JSON.stringify(result.value));
+
+        // Convert Coordinate
+        var transformed = transformCoordinates(result.value.geometry.coordinates);
+        result.value.geometry.coordinates = transformed;
+        
+        geojson += JSON.stringify(result.value);
         return source.read().then(function repeat(result) {
             if (result.done) return;
-            if (commander.convertCoordinates) {
-                var transformed = transformCoordinates(result.value.geometry.coordinates);
-                result.value.geometry.coordinates = transformed;
-            }
-            out.write(",");
-            out.write(JSON.stringify(result.value));
+            
+            // Convert Coordinate
+            var transformed = transformCoordinates(result.value.geometry.coordinates);
+            result.value.geometry.coordinates = transformed;
+
+            geojson += ",";
+            geojson += JSON.stringify(result.value);
             return source.read().then(repeat);
         });
     }).then(function () {
-        out[out === process.stdout ? "write" : "end"]("]}\n");
+        geojson += "]}\n";
+        return geojson;
     });
 };
 
@@ -89,17 +88,4 @@ function transformCoordinates(coordinates) {
         _coords.push(_points);
     });
     return _coords;
-};
-
-function handleEpipe(error) {
-    if (error.code === "EPIPE" || error.errno === "EPIPE") {
-        process.exit(0);
-    }
-};
-
-function handleError(error) {
-    console.error();
-    console.error("  error: " + error.message);
-    console.error();
-    process.exit(1);
 };

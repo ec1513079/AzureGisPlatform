@@ -1,10 +1,18 @@
 {
   "bindings": [{
-    "name": "queueItem",
-    "type": "queueTrigger",
-    "direction": "in",
-    "queueName": "shp2geojson",
-    "connection": "AzureWebJobsDashboard"
-  }],
+      "name": "queueItem",
+      "type": "queueTrigger",
+      "direction": "in",
+      "queueName": "shp2geojson",
+      "connection": "AzureWebJobsDashboard"
+    },
+    {
+      "type": "blob",
+      "name": "outputBlob",
+      "path": "geojson/{DateTime}-{Id}.geojson",
+      "connection": "AzureWebJobsDashboard",
+      "direction": "out"
+    }
+  ],
   "disabled": false
 }
