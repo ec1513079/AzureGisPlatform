@@ -4,9 +4,9 @@ var fs = require("fs"),
     shapefile = require('shapefile'),
     proj4 = require("proj4");
 
-module.exports = function (context, shapeBlob) {
+module.exports = function (context, queueItem) {
 
-    context.log("JavaScript blob trigger function processed blob \n Name:", context.bindingData.name, "\n Blob Size:", shapeBlob.length, "Bytes");
+    context.log('JavaScript queue trigger function processed work item', queueItem);
 
     // Pre setting proj4
     proj4.defs("EPSG:FROM", "+proj=longlat +datum=WGS84 +no_defs");
@@ -18,17 +18,19 @@ module.exports = function (context, shapeBlob) {
     mkdirp.sync(tmpDir);
 
     // Download Shape file and Dbf file
+    var tmpShpfilePath = `${tmpDir}\\tmp.shp`;
+    var tmpDbffilePath = `${tmpDir}\\tmp.dbf`;
     var requestShp = new Promise(resolve =>
-        request('http://127.0.0.1:10000/devstoreaccount1/shapefile/01100.shp?st=2018-02-25T12%3A51%3A00Z&se=2018-02-26T12%3A51%3A00Z&sp=rwdl&sv=2017-04-17&sr=b&sig=ZSYHN%2BhLyJENElEx0qDe%2FXE5XCVde%2BFjeQWsjNQln6c%3D')
-        .pipe(fs.createWriteStream(`${tmpDir}\\tmp.shp`))
+        request(queueItem.shpurl)
+        .pipe(fs.createWriteStream(tmpShpfilePath))
         .on('finish', resolve));
     var requestDbf = new Promise(resolve =>
-        request('http://127.0.0.1:10000/devstoreaccount1/shapefile/01100.dbf?st=2018-02-25T06%3A51%3A00Z&se=2018-02-28T06%3A51%3A00Z&sp=rwdl&sv=2017-04-17&sr=b&sig=PPHQlKXhDU8trydbL0kFFmBDqkr7q4WtmUCTkhyFvJQ%3D')
-        .pipe(fs.createWriteStream(`${tmpDir}\\tmp.dbf`))
+        request(queueItem.dbfurl)
+        .pipe(fs.createWriteStream(tmpDbffilePath))
         .on('finish', resolve));
     Promise.all([requestShp, requestDbf]).then(function (sources) {
-        shapefile.open(`${tmpDir}\\tmp.shp`, `${tmpDir}\\tmp.dbf`, {
-                encoding: "shift_jis"
+        shapefile.open(tmpShpfilePath, tmpDbffilePath, {
+                encoding: queueItem.encoding
             })
             .then(source => source.read()
                 .then(function log(result) {

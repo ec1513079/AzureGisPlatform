@@ -1,13 +1,10 @@
 {
-  "disabled": false,
-  "bindings": [
-    {
-      "name": "shapeBlob",
-      "type": "blobTrigger",
-      "direction": "in",
-      "dataType": "binary",
-      "path": "shapefile/{name}.zip",
-      "connection": "AzureWebJobsStorage"
-    }
-  ]
+  "bindings": [{
+    "name": "queueItem",
+    "type": "queueTrigger",
+    "direction": "in",
+    "queueName": "shp2geojson",
+    "connection": "AzureWebJobsDashboard"
+  }],
+  "disabled": false
 }
