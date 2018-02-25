@@ -18,22 +18,30 @@ module.exports = function (context, queueItem) {
     var workDir = `${execPath}\\tmp\\${context.invocationId}`;
     mkdirp.sync(workDir);
 
-    // Download Shape file and Dbf file
+    // Download Shape file 
     var tmpShpfilePath = `${workDir}\\tmp.shp`;
-    var tmpDbffilePath = `${workDir}\\tmp.dbf`;
     var requestShp = new Promise(resolve =>
         request(queueItem.shp_url)
         .pipe(fs.createWriteStream(tmpShpfilePath))
         .on('finish', resolve));
-    var requestDbf = new Promise(resolve =>
+        
+    // Download Dbf file
+    //   if 'queueItem.dbf_url' is not defined, don't download dbf file
+    //   and don't output feature's propaty to geojson. 
+    var tmpDbffilePath = `${workDir}\\tmp.dbf`;
+    var requestDbf = queueItem.dbf_url ? new Promise(resolve =>
         request(queueItem.dbf_url)
         .pipe(fs.createWriteStream(tmpDbffilePath))
-        .on('finish', resolve));
+        .on('finish', resolve)) : null;
+
     Promise.all([requestShp, requestDbf])
         .then(function (sources) {
             // Convert Shapefile to GeoJSON
-            return shapefile.open(tmpShpfilePath, tmpDbffilePath, {
-                    encoding: queueItem.shp_encoding
+            return shapefile.open(
+                tmpShpfilePath,
+                queueItem.dbf_url ? tmpDbffilePath : null, // if 'queueItem.dbf_url' is not defined, unload DBF
+                {
+                    encoding: queueItem.shp_encoding || "utf8"
                 })
                 .then(writeFeatureCollection)
                 .then(function (geojson) {
