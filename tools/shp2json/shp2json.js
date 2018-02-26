@@ -4,7 +4,8 @@
 var fs = require("fs"),
   commander = require("commander"),
   shapefile = require("shapefile"),
-  proj4 = require("proj4");
+  proj4 = require("proj4"),
+  replaceExt = require('replace-ext');;
 
 commander
   .version(require("./package.json").version)
@@ -31,8 +32,21 @@ else if (commander.args.length !== 1) {
 
 var out = (commander.out === "-" ? process.stdout : fs.createWriteStream(commander.out)).on("error", handleEpipe);
 
-proj4.defs("EPSG:FROM", commander.epsgFrom || "+proj=longlat +datum=WGS84 +no_defs");
-proj4.defs("EPSG:TO", commander.epsgTo || "+proj=longlat +datum=WGS84 +no_defs");
+// Loading convert coordinates config
+// [Loading Priority of FromCoordinates]
+//   commander.epsgFrom > shape_name.prj file > default("+proj=longlat +datum=WGS84 +no_defs")
+try {
+  var epsgFrom = commander.epsgFrom || fs.readFileSync(replaceExt(commander.args[0], ".prj"), "utf8");
+} catch(err) {
+  if (err.code === 'ENOENT') {
+    var epsgFrom = "+proj=longlat +datum=WGS84 +no_defs";
+  } else {
+    throw err;
+  }
+}
+var epsgTo = commander.epsgTo || "+proj=longlat +datum=WGS84 +no_defs";
+proj4.defs("EPSG:FROM", epsgFrom);
+proj4.defs("EPSG:TO", epsgTo);
 
 shapefile.open(
     commander.args[0] === "-" ? process.stdin : commander.args[0],
