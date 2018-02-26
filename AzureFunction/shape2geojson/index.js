@@ -24,11 +24,11 @@ module.exports = function (context, queueItem) {
         request(queueItem.shp_url)
         .pipe(fs.createWriteStream(tmpShpfilePath))
         .on('finish', resolve));
-        
+
     // Download Dbf file
     //   if 'queueItem.dbf_url' is not defined, don't download dbf file
     //   and don't output feature's propaty to geojson. 
-    var tmpDbffilePath = `${workDir}\\tmp.dbf`;
+    var tmpDbffilePath = queueItem.dbf_url ? `${workDir}\\tmp.dbf` : null;
     var requestDbf = queueItem.dbf_url ? new Promise(resolve =>
         request(queueItem.dbf_url)
         .pipe(fs.createWriteStream(tmpDbffilePath))
@@ -36,15 +36,17 @@ module.exports = function (context, queueItem) {
 
     Promise.all([requestShp, requestDbf])
         .then(function (sources) {
+            context.log(`Downloaded Shapefile and Dbf file\n  ShpFile PATH: ${tmpShpfilePath}\n  DbfFile PATH: ${tmpDbffilePath}`);
             // Convert Shapefile to GeoJSON
             return shapefile.open(
-                tmpShpfilePath,
-                queueItem.dbf_url ? tmpDbffilePath : null, // if 'queueItem.dbf_url' is not defined, unload DBF
-                {
-                    encoding: queueItem.shp_encoding || "utf8"
-                })
+                    tmpShpfilePath,
+                    tmpDbffilePath, // if 'queueItem.dbf_url' is not defined, unload DBF
+                    {
+                        encoding: queueItem.shp_encoding || "utf8"
+                    })
                 .then(writeFeatureCollection)
                 .then(function (geojson) {
+                    context.log(`Completed GeoJSON Converte`);
                     context.bindings.outputBlob = geojson;
                     context.done();
                 });
