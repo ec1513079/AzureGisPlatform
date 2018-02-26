@@ -9,10 +9,6 @@ module.exports = function (context, queueItem) {
 
     context.log('JavaScript queue trigger function processed work item', queueItem);
 
-    // Pre setting proj4
-    proj4.defs("EPSG:FROM", queueItem.epsg_from || "+proj=longlat +datum=WGS84 +no_defs");
-    proj4.defs("EPSG:TO", queueItem.epsg_to || "+proj=longlat +datum=WGS84 +no_defs");
-
     // Create Working dirctory
     var execPath = context.executionContext.functionDirectory;
     var workDir = `${execPath}\\tmp\\${context.invocationId}`;
@@ -34,9 +30,42 @@ module.exports = function (context, queueItem) {
         .pipe(fs.createWriteStream(tmpDbffilePath))
         .on('finish', resolve)) : null;
 
-    Promise.all([requestShp, requestDbf])
+    // Download Prj file (for get shape file's Coordinate)
+    //   if 'queueItem.prj_url' is not defined, don't download prj file
+    var tmpPrjfilePath = queueItem.prj_url ? `${workDir}\\tmp.prj` : null;
+    var requestPrj = queueItem.prj_url ? new Promise(resolve =>
+        request(queueItem.prj_url)
+        .pipe(fs.createWriteStream(tmpPrjfilePath))
+        .on('finish', resolve)) : null;
+
+    Promise.all([requestShp, requestDbf, requestPrj])
+        .then(function (sources) {
+            // Loading convert coordinates config
+
+            // [Loading Priority of FromCoordinates]
+            //   queueItem.epsg_from > queueItem.prj_url file > default("+proj=longlat +datum=WGS84 +no_defs")
+            var epsgFrom = "+proj=longlat +datum=WGS84 +no_defs";
+            if (queueItem.epsg_from) {
+                epsgFrom = queueItem.epsg_from
+            } else if (tmpPrjfilePath) {
+                context.log(`Downloaded Prj file\n  PrjFile PATH: ${tmpPrjfilePath}`);
+                epsgFrom = fs.readFileSync(tmpPrjfilePath, "utf8");
+            }
+            proj4.defs("EPSG:FROM", epsgFrom);
+
+            // [Loading Priority of ToCoordinates]
+            //   queueItem.epsg_to > default("+proj=longlat +datum=WGS84 +no_defs")
+            var epsgTo = "+proj=longlat +datum=WGS84 +no_defs";
+            if (queueItem.epsg_to) {
+                epsgTo = queueItem.epsg_to;
+            }
+            proj4.defs("EPSG:TO", epsgTo);
+
+            context.log(`Convert Coordinates Config\n  From: ${epsgFrom}\n  To  :${epsgTo}`);
+        })
         .then(function (sources) {
             context.log(`Downloaded Shapefile and Dbf file\n  ShpFile PATH: ${tmpShpfilePath}\n  DbfFile PATH: ${tmpDbffilePath}`);
+
             // Convert Shapefile to GeoJSON
             return shapefile.open(
                     tmpShpfilePath,
@@ -50,10 +79,12 @@ module.exports = function (context, queueItem) {
                     context.bindings.outputBlob = geojson;
                     context.done();
                 });
-        }).catch(function (err) {
+        })
+        .catch(function (err) {
             context.log.error(err.stack);
             context.done(err.stack);
-        }).then(function () {
+        })
+        .then(function () {
             // finally: delete working dirctory
             del(workDir, {
                 force: true

@@ -1,0 +1,6 @@
+{
+    "shp_url":"https://ecshapefuncstorage.blob.core.windows.net/shapefile/01100/01100.shp?st=2018-02-25T00%3A51%3A00Z&se=2018-03-01T00%3A51%3A00Z&sp=rwdl&sv=2017-04-17&sr=b&sig=2CoQmUBqDOVt0HBzh4p9uE%2FZQ70r8cd90MqMfOF0d5Q%3D",
+    "dbf_url":"https://ecshapefuncstorage.blob.core.windows.net/shapefile/01100/01100.dbf?st=2018-02-24T15%3A51%3A00Z&se=2018-02-28T15%3A51%3A00Z&sp=rwdl&sv=2017-04-17&sr=b&sig=6OuGnayRso86CsLXLeg5Kr20tpEkJVPVbuvBEkfsTUA%3D",
+    "prj_url":"https://ecshapefuncstorage.blob.core.windows.net/shapefile/01100/01100.prj?st=2018-02-24T16%3A59%3A00Z&se=2018-03-02T16%3A59%3A00Z&sp=rwdl&sv=2017-04-17&sr=b&sig=68pXrHrCIVFiElJG4IsvuYir28Oe%2FBNNxJNae%2FaMlhs%3D",
+    "shp_encoding":"shift_jis"
+}
