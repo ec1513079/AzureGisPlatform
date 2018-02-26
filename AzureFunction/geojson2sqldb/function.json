@@ -1,0 +1,12 @@
+{
+  "disabled": false,
+  "bindings": [
+    {
+      "name": "geojsonBlob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "geojson/{name}.geojson",
+      "connection": "AzureWebJobsDashboard"
+    }
+  ]
+}
