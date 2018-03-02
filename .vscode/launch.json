@@ -69,6 +69,20 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "tools/shp2json/test_shiftjis_k1",
+            "program": "${workspaceFolder}/tools/shp2json/shp2json.js",
+            "args": [
+                "--encoding",
+                "shift_jis",
+                "--convert-coordinates",
+                "-o",
+                "${workspaceFolder}/tools/shp2json/test/out/k1.geojson",
+                "${workspaceFolder}/tools/shp2json/test/k1.shp"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "tools/json2mssql/test_points_geojson",
             "program": "${workspaceFolder}/tools/json2mssql/json2mssql.js",
             "args": [

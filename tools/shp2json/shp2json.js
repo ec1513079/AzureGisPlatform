@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 'use strict';
 
 var fs = require("fs"),
@@ -37,7 +38,7 @@ var out = (commander.out === "-" ? process.stdout : fs.createWriteStream(command
 //   commander.epsgFrom > shape_name.prj file > default("+proj=longlat +datum=WGS84 +no_defs")
 try {
   var epsgFrom = commander.epsgFrom || fs.readFileSync(replaceExt(commander.args[0], ".prj"), "utf8");
-} catch(err) {
+} catch (err) {
   if (err.code === 'ENOENT') {
     var epsgFrom = "+proj=longlat +datum=WGS84 +no_defs";
   } else {
@@ -145,14 +146,11 @@ function writeFeatureCollection(source) {
 
 function transformCoordinates(coordinates) {
   var _coords = [];
-  coordinates.forEach(function (points, index, ar) {
-    var _points = [];
-    points.forEach(function (point, indexx, arr) {
-      var transformed = proj4("EPSG:FROM", "EPSG:TO", point);
-      _points.push([ transformed[0], transformed[1] ]);
-    });
-    _coords.push(_points);
-  });
+  if (coordinates.length == 2 && !Array.isArray(coordinates[0]) && !Array.isArray(coordinates[1])) {
+    return proj4("EPSG:FROM", "EPSG:TO", coordinates);
+  } else {
+    coordinates.forEach(v => _coords.push(transformCoordinates(v)));
+  }
   return _coords;
 }
 
